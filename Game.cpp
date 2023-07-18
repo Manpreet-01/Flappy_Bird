@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Globals.h"
 
-
+const int ground_y = 578;
 Game::Game(sf::RenderWindow& window): win(window)
 {
 	bg_texture.loadFromFile("assets/bg.png");
@@ -16,8 +16,8 @@ Game::Game(sf::RenderWindow& window): win(window)
 	ground_sprite1.setScale(SCALE_FACTOR, SCALE_FACTOR);
 	ground_sprite2.setScale(SCALE_FACTOR, SCALE_FACTOR);
 	
-	ground_sprite1.setPosition(0, 578);
-	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, 578);
+	ground_sprite1.setPosition(0, ground_y);
+	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, ground_y);
 	
 }
 
@@ -31,7 +31,7 @@ void Game::startGameLoop(){
 		
 		// event loop
 		while(win.pollEvent(event)){
-			if(event.type==sf::Event::Closed){
+			if(event.type == sf::Event::Closed){
 				win.close();
 			}
 		}
@@ -53,4 +53,21 @@ void Game::draw(){
 void Game::moveGround(sf::Time& dt){
 	ground_sprite1.move(-move_speed * dt.asSeconds(), 0.f);
 	ground_sprite2.move(-move_speed * dt.asSeconds(), 0.f);
+	
+	if(ground_sprite1.getGlobalBounds().left + ground_sprite1.getGlobalBounds().width < 0){
+		int posx = ground_sprite2.getGlobalBounds().left + ground_sprite2.getGlobalBounds().width;
+		ground_sprite1.setPosition(posx, ground_y);
+	}
+	
+	if(ground_sprite2.getGlobalBounds().left + ground_sprite2.getGlobalBounds().width < 0){
+		int posx = ground_sprite1.getGlobalBounds().left + ground_sprite1.getGlobalBounds().width;
+		ground_sprite2.setPosition(posx, ground_y);
+	}
 }
+
+
+
+
+
+
+
