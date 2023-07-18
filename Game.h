@@ -8,7 +8,7 @@ class Game{
 		void startGameLoop();
 		
 	private:
-		sf::Texture bg_texture;
-		sf::Sprite bg_sprite;
+		sf::Texture bg_texture, ground_texture;
+		sf::Sprite bg_sprite, ground_sprite1, ground_sprite2;
 		void draw();
 };
