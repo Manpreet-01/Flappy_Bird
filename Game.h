@@ -1,5 +1,6 @@
 #pragma once
 #include<SFML/Graphics.hpp>
+#include "Bird.h"
 
 class Game{
 	public:
@@ -10,7 +11,8 @@ class Game{
 	private:
 		sf::Texture bg_texture, ground_texture;
 		sf::Sprite bg_sprite, ground_sprite1, ground_sprite2;
-		// sf::Clock clock;
+		Bird bird;
+		bool is_enter_pressed, run_game;
 		const int move_speed=270;
 		void draw();
 		void moveGround(sf:: Time&);
