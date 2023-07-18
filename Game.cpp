@@ -17,14 +17,16 @@ Game::Game(sf::RenderWindow& window): win(window)
 	ground_sprite2.setScale(SCALE_FACTOR, SCALE_FACTOR);
 	
 	ground_sprite1.setPosition(0, 578);
-	ground_sprite1.setPosition(ground_sprite1.getGlobalBounds().width, 578);
+	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, 578);
 	
 }
 
 	
 void Game::startGameLoop(){
+	sf::Clock clock;
 	// game loop
 	while(win.isOpen()){
+		sf::Time dt = clock.restart();  // return last frame consumed time and set new time to 0
 		sf::Event event;
 		
 		// event loop
@@ -33,6 +35,8 @@ void Game::startGameLoop(){
 				win.close();
 			}
 		}
+		
+		moveGround(dt);
 		
 		draw();
 		win.display();
@@ -44,4 +48,9 @@ void Game::draw(){
 	win.draw(bg_sprite);
 	win.draw(ground_sprite1);
 	win.draw(ground_sprite2);
+}
+
+void Game::moveGround(sf::Time& dt){
+	ground_sprite1.move(-move_speed * dt.asSeconds(), 0.f);
+	ground_sprite2.move(-move_speed * dt.asSeconds(), 0.f);
 }
