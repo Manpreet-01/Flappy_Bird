@@ -1,13 +1,16 @@
 #include "Game.h"
 #include "Globals.h"
+#include <sstream>
 
 const int ground_y = 578;
 
 Game::Game(sf::RenderWindow& window): win(window),
 is_enter_pressed(false),
 run_game(true),
+start_monitoring(false),
 pipe_counter(71),
-pipe_spawn_time(70)
+pipe_spawn_time(70),
+score(0)
 {
 	win.setFramerateLimit(60);
 	bg_texture.loadFromFile("assets/bg.png");
@@ -24,12 +27,20 @@ pipe_spawn_time(70)
 	
 	ground_sprite1.setPosition(0, ground_y);
 	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, ground_y);
+	
 	font.loadFromFile("assets/arial.ttf");
+	
 	restart_text.setFont(font);
 	restart_text.setCharacterSize(48);
 	restart_text.setFillColor(sf::Color::Black);
 	restart_text.setPosition(150, 650);
 	restart_text.setString("Restart Game");
+	
+	score_text.setFont(font);
+	score_text.setCharacterSize(24);
+	score_text.setFillColor(sf::Color::Black);
+	score_text.setPosition(15, 15);
+	score_text.setString("Score: 0");
 	
 	Pipe::loadTextures();
 }
@@ -52,6 +63,7 @@ void Game::doProcessing(sf::Time& dt){
 		}
 		
 		checkCollisions();
+		checkScores();
 	}
 	
 	bird.update(dt);
@@ -80,7 +92,9 @@ void Game::startGameLoop(){
 			}
 			
 			if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && !run_game){
-				restartGame();
+				if(restart_text.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)){
+					restartGame();
+				}
 			}
 		}
 		
@@ -102,6 +116,24 @@ void Game::checkCollisions(){
 	}
 }
 
+void Game::checkScores(){
+	if(pipes.size() > 0){
+		if(!start_monitoring){
+			if(bird.bird_sprite.getGlobalBounds().left > pipes[0].sprite_down.getGlobalBounds().left &&
+				bird.getRightBound() < pipes[0].getRightBound()
+			){
+				start_monitoring = true;
+			}
+		}else{
+			if(bird.bird_sprite.getGlobalBounds().left > pipes[0].getRightBound()){
+				score++;
+				score_text.setString("Score: " + toString(score));
+				start_monitoring = false;
+			}
+		}
+	}
+}
+
 void Game::draw(){
 	win.draw(bg_sprite);
 	for(Pipe& pipe : pipes){
@@ -111,7 +143,7 @@ void Game::draw(){
 	win.draw(ground_sprite1);
 	win.draw(ground_sprite2);
 	win.draw(bird.bird_sprite);			// because bird_sprite is inside bird object ( of class Bird )
-	
+	win.draw(score_text);
 	if(!run_game){
 		win.draw(restart_text);
 	}
@@ -139,6 +171,12 @@ void Game::restartGame(){
 	is_enter_pressed = false;
 	pipe_counter = 71;
 	pipes.clear();
+	score = 0;
+	score_text.setString("Score: 0");
 }
 
-
+std::string Game::toString(int num){
+	std::stringstream ss;
+	ss<<num;
+	return ss.str();
+}

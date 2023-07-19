@@ -21,5 +21,5 @@ exit
 
 :terminate
 pause
-exit
+REM exit
 
