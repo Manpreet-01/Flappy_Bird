@@ -2,7 +2,7 @@
 
 set SFML_PATH=C:\SFML\
 
-set INPUT_FILE_NAME=Main.cpp Game.cpp Bird.cpp
+set INPUT_FILE_NAME=Main.cpp Game.cpp Bird.cpp Pipe.cpp
 set OUTPUT_FILE_NAME=game.exe
 
 

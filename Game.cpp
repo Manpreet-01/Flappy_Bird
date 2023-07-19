@@ -5,7 +5,9 @@ const int ground_y = 578;
 
 Game::Game(sf::RenderWindow& window): win(window),
 is_enter_pressed(false),
-run_game(true)
+run_game(true),
+pipe_counter(71),
+pipe_spawn_time(70)
 {
 	win.setFramerateLimit(60);
 	bg_texture.loadFromFile("assets/bg.png");
@@ -23,9 +25,30 @@ run_game(true)
 	ground_sprite1.setPosition(0, ground_y);
 	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, ground_y);
 	
+	Pipe::loadTextures();
 }
 
+void Game::doProcessing(sf::Time& dt){
+	if(is_enter_pressed){
+		moveGround(dt);
+		if(pipe_counter > pipe_spawn_time){
+			pipes.push_back(Pipe(dist(rd)));    //push random no.
+			pipe_counter = 0;
+		}
+		
+		pipe_counter++;
+		
+		for(int i=0; i<pipes.size(); i++){
+			pipes[i].update(dt);
+			if(pipes[i].getRightBound() < 0){
+				pipes.erase(pipes.begin() + i);     // erase ith index pipe
+			}
+		}
+	}
 	
+	bird.update(dt);
+}
+
 void Game::startGameLoop(){
 	sf::Clock clock;
 	// game loop
@@ -49,9 +72,7 @@ void Game::startGameLoop(){
 			}
 		}
 		
-		moveGround(dt);
-		bird.update(dt);
-		
+		doProcessing(dt);
 		draw();
 		win.display();
 	}
@@ -60,6 +81,10 @@ void Game::startGameLoop(){
 
 void Game::draw(){
 	win.draw(bg_sprite);
+	for(Pipe& pipe : pipes){
+		win.draw(pipe.sprite_down);
+		win.draw(pipe.sprite_up);
+	}
 	win.draw(ground_sprite1);
 	win.draw(ground_sprite2);
 	win.draw(bird.bird_sprite);			// because inside bird object of class Bird

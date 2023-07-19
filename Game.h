@@ -1,6 +1,9 @@
 #pragma once
 #include<SFML/Graphics.hpp>
+#include <vector>
+#include <random>
 #include "Bird.h"
+#include "Pipe.h"
 
 class Game{
 	public:
@@ -15,5 +18,11 @@ class Game{
 		bool is_enter_pressed, run_game;
 		const int move_speed=270;
 		void draw();
-		void moveGround(sf:: Time&);
+		void moveGround(sf::Time&);
+		void doProcessing(sf::Time& dt);
+		int pipe_counter, pipe_spawn_time;
+		std::vector<Pipe> pipes;
+		
+		std::random_device rd;															// seed for random no.
+		std::uniform_int_distribution<int> dist{250, 550};  // random no. generator
 };
