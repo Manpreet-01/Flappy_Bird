@@ -24,6 +24,12 @@ pipe_spawn_time(70)
 	
 	ground_sprite1.setPosition(0, ground_y);
 	ground_sprite2.setPosition(ground_sprite1.getGlobalBounds().width, ground_y);
+	font.loadFromFile("assets/arial.ttf");
+	restart_text.setFont(font);
+	restart_text.setCharacterSize(48);
+	restart_text.setFillColor(sf::Color::Black);
+	restart_text.setPosition(150, 650);
+	restart_text.setString("Restart Game");
 	
 	Pipe::loadTextures();
 }
@@ -72,6 +78,10 @@ void Game::startGameLoop(){
 					bird.flapBird(dt);
 				}
 			}
+			
+			if(event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && !run_game){
+				restartGame();
+			}
 		}
 		
 		doProcessing(dt);
@@ -101,6 +111,10 @@ void Game::draw(){
 	win.draw(ground_sprite1);
 	win.draw(ground_sprite2);
 	win.draw(bird.bird_sprite);			// because bird_sprite is inside bird object ( of class Bird )
+	
+	if(!run_game){
+		win.draw(restart_text);
+	}
 }
 
 void Game::moveGround(sf::Time& dt){
@@ -118,9 +132,13 @@ void Game::moveGround(sf::Time& dt){
 	}
 }
 
-
-
-
-
+void Game::restartGame(){
+	bird.resetBirdPosition();
+	bird.setShouldFly(false);
+	run_game = true;
+	is_enter_pressed = false;
+	pipe_counter = 71;
+	pipes.clear();
+}
 
 

@@ -21,8 +21,11 @@ class Game{
 		void moveGround(sf::Time&);
 		void doProcessing(sf::Time& dt);
 		void checkCollisions();
+		void restartGame();
 		int pipe_counter, pipe_spawn_time;
 		std::vector<Pipe> pipes;
+		sf::Font font;
+		sf::Text restart_text;
 		
 		std::random_device rd;															// seed for random no.
 		std::uniform_int_distribution<int> dist{250, 550};  // random no. generator
