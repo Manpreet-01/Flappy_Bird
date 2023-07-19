@@ -20,6 +20,7 @@ class Game{
 		void draw();
 		void moveGround(sf::Time&);
 		void doProcessing(sf::Time& dt);
+		void checkCollisions();
 		int pipe_counter, pipe_spawn_time;
 		std::vector<Pipe> pipes;
 		

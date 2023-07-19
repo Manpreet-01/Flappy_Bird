@@ -44,6 +44,8 @@ void Game::doProcessing(sf::Time& dt){
 				pipes.erase(pipes.begin() + i);     // erase ith index pipe
 			}
 		}
+		
+		checkCollisions();
 	}
 	
 	bird.update(dt);
@@ -78,6 +80,17 @@ void Game::startGameLoop(){
 	}
 }
 
+void Game::checkCollisions(){
+	if(pipes.size()>0){
+		if(pipes[0].sprite_down.getGlobalBounds().intersects(bird.bird_sprite.getGlobalBounds()) ||
+			pipes[0].sprite_up.getGlobalBounds().intersects(bird.bird_sprite.getGlobalBounds()) ||
+			bird.bird_sprite.getGlobalBounds().top >= 548
+		){
+			is_enter_pressed = false;
+			run_game = false ;
+		}
+	}
+}
 
 void Game::draw(){
 	win.draw(bg_sprite);
@@ -87,7 +100,7 @@ void Game::draw(){
 	}
 	win.draw(ground_sprite1);
 	win.draw(ground_sprite2);
-	win.draw(bird.bird_sprite);			// because inside bird object of class Bird
+	win.draw(bird.bird_sprite);			// because bird_sprite is inside bird object ( of class Bird )
 }
 
 void Game::moveGround(sf::Time& dt){
