@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height">
+  <link rel="icon" type="image/png" href="./assets/birdup.png">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <canvas id="myCanvas"> </canvas>
+
+  <img id="bg" src="./assets/bg.png" style="display:none">
+  <img id="birdup" src="./assets/birdup.png" style="display:none">
+  <img id="birddown" src="./assets/birdup.png" style="display:none">
+  <img id="ground" src="./assets/ground.png" style="display:none">
+  <img id="pipe" src="./assets/pipe.png" style="display:none">
+  <img id="pipedown" src="./assets/pipedown.png" style="display:none">
+
+  <audio id="jumpSoundElement" src="assets/sfx/flap.mp3"></audio>
+  <audio id="hitSoundElement" src="assets/sfx/hit.mp3"></audio>
+  <!-- <div id="errorDiv"></div> -->
+
+  <canvas id="canvas"></canvas>
+
+  <!-- <script>
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.log("customError:   " + error)
+      const fileName = extractFileName(source);
+      const errorMessage = error + "\n" + fileName + " " + lineno;
+
+      document.getElementById('errorDiv').innerText = errorMessage;
+    };
+
+    function extractFileName(url) {
+      const fileNameRegex = /\/([^\/?#]+)[^\/]*$/;
+      const matches = url.match(fileNameRegex);
+      if (matches && matches.length >= 2) {
+        return matches[1]; // The filename without the full URL
+      }
+      return url; // Fallback if extraction fails (return the full URL)
+    }
+  </script>
+ -->
+
+  <script src="collisionDetector.js" onerror="handleError(event)"></script>
+  <script src="pipe.js" onerror="handleError(event)"></script>
+  <script src="bird.js" onerror="handleError(event)"></script>
+  <script src="main.js" onerror="handleError(event)"></script>
+</body>
+
+</html>
